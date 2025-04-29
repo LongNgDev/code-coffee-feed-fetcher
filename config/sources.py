@@ -2,10 +2,10 @@
 
 # 📰 Full list of tech news RSS feeds
 sources = [
-    {"url": "https://techcrunch.com/feed/", "priority": 1},
+    {"url": "https://techcrunch.com/feed/"},
     # {"url": "https://www.theverge.com/rss/index.xml", "priority": 1},
     # {"url": "https://www.techradar.com/rss", "priority": 2},
-    # {"url": "https://www.techradar.com/au/feeds/articletype/news", "priority": 2},
+    {"url": "https://www.techradar.com/au/feeds/articletype/news"},
     # {"url": "https://www.wired.com/feed/rss", "priority": 1},
     # {"url": "http://feeds.arstechnica.com/arstechnica/index/", "priority": 1},
     # {"url": "https://www.engadget.com/rss.xml", "priority": 2},

@@ -1,7 +1,7 @@
 # mongodb_storage.py
 
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timezone
 
 class MongoDBNewsStorage:
     def __init__(self, uri="mongodb://localhost:27017/", db_name="code_and_coffee_db"):
@@ -23,7 +23,7 @@ class MongoDBNewsStorage:
             print(f"⚠️ Duplicate group found. Skipping: {representative_title}")
             return
 
-        group["date_saved"] = datetime.utcnow().isoformat()
+        group["date_saved"] = datetime.now(timezone.utc).isoformat()
         self.collection.insert_one(group)
 
     def is_duplicate(self, guid: str, link: str) -> bool:

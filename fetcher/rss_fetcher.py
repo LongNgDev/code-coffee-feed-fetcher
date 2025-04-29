@@ -3,7 +3,7 @@ import json
 
 class FeedFetcher:
     def __init__(self, sources: list[dict]):
-        self.sources = sources  # FIXED (use consistent naming)
+        self.sources = sources  
 
     def fetch_all(self):
         """Fetch all feeds and return list of articles."""
@@ -11,7 +11,6 @@ class FeedFetcher:
 
         for source_info in self.sources:
             source_url = source_info["url"]
-            priority = source_info["priority"]
 
             feed = feedparser.parse(source_url)
             
@@ -33,17 +32,11 @@ class FeedFetcher:
                     "author": authors,
                     "published": published,
                     "summary": summary,
-                    "priority": priority,
                     "source_url": source_url
                 }
                 articles.append(article)
 
         return articles
 
-    def fetch_by_priority(self, min_priority: int = 2) -> list[dict]:
-        """Fetch articles only from sources with priority <= min_priority."""
-        filtered_sources = [s for s in self.sources if s["priority"] <= min_priority]
-        fetcher = FeedFetcher(filtered_sources)
-        return fetcher.fetch_all()
 
     
