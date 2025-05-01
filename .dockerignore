@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode or other editors
+.vscode/
+*.swp
+
+# Git & version control
+.git/
+.gitignore
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python virtual environments
+venv/
+env/
+# Cache & logs
+*.log
+.cache/
