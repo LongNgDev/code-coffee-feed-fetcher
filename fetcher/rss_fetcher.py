@@ -24,6 +24,11 @@ class FeedFetcher:
                 summary = getattr(entry, "summary", getattr(entry, "description", "")) or "[No Summary]"
                 guid = getattr(entry, "id", None) or "[No GUID]"
                 authors = getattr(entry, "author", None) or "[No Author]"
+                
+                if hasattr(entry, "content"):
+                    content = entry.content[0].value
+                else:
+                    content = summary  # fallback if no content tag present
 
                 article = {
                     "guid": guid,
@@ -32,9 +37,12 @@ class FeedFetcher:
                     "author": authors,
                     "published": published,
                     "summary": summary,
-                    "source_url": source_url
+                    "source_url": source_url,
+                    "content": content,   
                 }
                 articles.append(article)
+
+        print(f"Article: {json.dumps(articles[0], indent=2)}")
 
         return articles
 
