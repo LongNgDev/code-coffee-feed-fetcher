@@ -1,2 +1,4 @@
 feedparser
 pymongo
+requests
+beautifulsoup4

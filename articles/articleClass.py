@@ -7,6 +7,8 @@ class Article:
         self.summary = summary
         self.guid = guid
 
+    """ Setters """ 
+
     def set_title(self, title: str):
         self.title = title
     
@@ -24,6 +26,11 @@ class Article:
 
     def set_guid(self, guid: str):
         self.guid = guid
+
+    def set_content(self, content: str):
+        self.content = content
+
+    """ Getters """
 
     def get_title(self):
         return self.title
@@ -43,14 +50,20 @@ class Article:
     def get_guid(self):
         return self.guid
     
+    def get_content(self):
+        return self.content
+    
+    """ Other methods """
+
     def to_dict(self):
         return {
             "title": self.title,
             "link": self.link,
+            "content": self.content,
             "author": self.author,
             "published": self.published,
             "summary": self.summary,
-            "guid": self.guid
+            "guid": self.guid,
         }
         
         
