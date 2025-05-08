@@ -68,28 +68,23 @@ if __name__ == "__main__":
     This story has been updated to include information about the “Cybercab” trademark applications."""
 
 
-    for model in ["llama3", "mistral", "phi4"]:
+    for model in [ "mistral"]:
         start_time = time.time()
         client = AiClient(model_name=model)
         print(f"\nTesting {model}...")
         prompt = f"""
-        Analyze the following article and determine the most suitable tone and format for republishing it on a tech-focused blog. Consider the target audience, article length, technical depth, and overall message. Provide the best tone (e.g., critical, optimistic, analytical, visionary) and the ideal format (e.g., listicle, in-depth analysis, executive summary, opinion piece) for maximum reader engagement. 
+        Analyze the following article and provide a list of relevant keywords or tags that best describe its content. The tags should be concise, relevant, and suitable for a tech-focused blog.
 
-        Article: {ARTICLE}
+            Article: {ARTICLE}
 
-        Provide your response in the following format:
-
-        Tone: [Choose the most suitable tone based on the article's content and audience]
-        Tags: [List relevant tags or keywords that would help categorize the article]
-        Audience: [Identify the target audience for the article, such as tech enthusiasts, industry professionals, or general readers]
-        Format: [Choose the best format for the article, such as listicle, deep dive, or quick overview]
-        Reasoning: [Briefly explain why this tone and format are the best fit for the article and its intended audience]
+            Return a list of tags only, no other text, no explanations, no formatting.
         """
 
-
         response = client.generate(prompt)
+        tags = [tag.strip() for tag in response.split(",") if tag.strip()]
+        print(f"{type(tags)}")
         end_time = time.time()
-        print(f"Response ({model}): {response}")
+        print(f"Response ({model}): {tags}")
         client.close()
         print(f"Time taken: {end_time - start_time:.2f} seconds")
         print("=========================================")

@@ -1,10 +1,12 @@
 class Article:
-    def __init__(self, title: str = "", link: str = "", author: str = "", published: str = "", summary: str = "", guid: str = ""):
+    def __init__(self, title: str = "", link: str = "", author: str = "", published: str = "", summary: str = "", guid: str = "", tags: list[str] = [""], content: str = ""):
         self.title = title
         self.link = link
         self.author = author
         self.published = published
         self.summary = summary
+        self.content = content
+        self.tags = tags
         self.guid = guid
 
     """ Setters """ 
@@ -29,6 +31,9 @@ class Article:
 
     def set_content(self, content: str):
         self.content = content
+    
+    def set_tags(self, tags: list[str]):
+        self.tags = tags
 
     """ Getters """
 
@@ -53,6 +58,9 @@ class Article:
     def get_content(self):
         return self.content
     
+    def get_tags(self):
+        return self.tags
+    
     """ Other methods """
 
     def to_dict(self):
@@ -60,6 +68,7 @@ class Article:
             "title": self.title,
             "link": self.link,
             "content": self.content,
+            "tags": self.tags,
             "author": self.author,
             "published": self.published,
             "summary": self.summary,

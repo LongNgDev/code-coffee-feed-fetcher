@@ -13,7 +13,7 @@ class Fetcher:
       source_url = source_info["url"]
       feed = feedparser.parse(source_url)
 
-      self.articles.extend((entry, source_url) for entry in feed.entries)  # flattening the list
+      self.articles.extend(feed.entries) # flattening the list
 
 
   def get_articles(self):

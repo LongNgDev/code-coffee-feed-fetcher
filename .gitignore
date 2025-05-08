@@ -1,1 +1,82 @@
-*.tar
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+.venv/
+ENV/
+.pipenv/
+.python-version
+
+# System Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Logs and Debug Files
+logs/
+*.log
+*.tmp
+*.bak
+*.swp
+*.orig
+*.db
+*.sqlite3
+
+# Secret Files
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.pfx
+
+# Test and Coverage Files
+.coverage
+.cache/
+*.cover
+coverage.xml
+.nosetests.xml
+test-results.xml
+*.spec
+
+# Build Artifacts
+dist/
+build/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+*.lock
+pip-wheel-metadata/
+*.tar.gz
+*.zip
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Git Files
+*.rej
+*.orig
+*.patch
+
+# Bot Files
+bots_extracted/
+Bots.zip
+Bots_extracted/
+debug/
+debug.log
+scraper_results/
+email_extractor/
+data/
+output/
+scraped_emails/
+crawl_sessions/
+error_logs/
+temp/

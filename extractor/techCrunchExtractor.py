@@ -8,7 +8,6 @@ class TechCrunchExtractor(ContentExtractor):
         super().__init__(link)
         self.content = None
 
-
     def extract_content(self):
         soup = self.fetch_html()
         if not soup:
