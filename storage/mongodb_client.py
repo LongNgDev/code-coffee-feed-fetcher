@@ -85,12 +85,16 @@ class MongoDBClient(DatabaseInterface, ABC):
         query = {"$or": []}
 
         # Check for unique fields like "guid" or "link"
-        if "guid" in data:
+        if "guid" in data and data["guid"]:
             query["$or"].append({"guid": data["guid"]})
-        if "link" in data:
+        if "link" in data and data["link"]:
             query["$or"].append({"link": data["link"]})
 
+        # If no unique fields provided, return False (not a duplicate)
         if not query["$or"]:
             return False
-        
-        return collection.find_one(query) is not None
+
+        # Check for existing document
+        existing_document = collection.find_one(query)
+        return existing_document is not None
+

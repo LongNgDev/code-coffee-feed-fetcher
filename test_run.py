@@ -1,15 +1,14 @@
-from extractor.contentExtractor import ContentExtractor
-from extractor.factory import get_extractor_for_url
+from storage.mongodb_client import MongoDBClient
 
 
 def main():
-    # Import the function to be tested
+    db = MongoDBClient()
+    collection = db.get_collection("news_articles")
+    print(f"Collection: {collection}")
+    article = db.fetch({"title": "Scaling startups in the European market"}, "news_articles" )
 
-    content_extractor = get_extractor_for_url("https://techcrunch.com/2025/05/05/apple-plans-to-split-iphone-18-launch-into-two-phases-in-2026/")
-
-    # content_extractor = ContentExtractor("https://techcrunch.com/2025/05/05/apple-plans-to-split-iphone-18-launch-into-two-phases-in-2026/")
-    content = content_extractor.extract_content()
-    print(content)
+    print(f"Article fetched from MongoDB:\n{article[0].get('_id', 'Untitled')}")
+    
 
 
 if __name__ == "__main__":

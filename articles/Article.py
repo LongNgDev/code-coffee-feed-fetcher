@@ -1,8 +1,8 @@
 class Article:
-    def __init__(self, title: str = "", link: str = "", author: str = "", published: str = "", summary: str = "", guid: str = "", tags: list[str] = [""], content: str = ""):
+    def __init__(self, title: str = "", link: str = "", authors: str = "", published: str = "", summary: str = "", guid: str = "", tags: list[str] = [""], content: str = ""):
         self.title = title
         self.link = link
-        self.author = author
+        self.authors = authors
         self.published = published
         self.summary = summary
         self.content = content
@@ -17,8 +17,8 @@ class Article:
     def set_link(self, link: str):
         self.link = link
     
-    def set_author(self, author: str):
-        self.author = author
+    def set_authors(self, authors: str):
+        self.authors = authors
     
     def set_published(self, published: str):
         self.published = published
@@ -43,8 +43,8 @@ class Article:
     def get_link(self):
         return self.link
     
-    def get_author(self):
-        return self.author
+    def get_authors(self):
+        return self.authors
     
     def get_published(self):
         return self.published
@@ -69,7 +69,7 @@ class Article:
             "link": self.link,
             "content": self.content,
             "tags": self.tags,
-            "author": self.author,
+            "authors": self.authors,
             "published": self.published,
             "summary": self.summary,
             "guid": self.guid,
