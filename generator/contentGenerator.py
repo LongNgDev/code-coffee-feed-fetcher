@@ -7,7 +7,7 @@ class ContentGenerator(AiClient):
         self.article = Article()
         
     def generate_title(self, content:str = ""):
-
+        title = ""
         
         PROMPT = f"""
             You are a professional tech journalist and SEO expert.
@@ -25,7 +25,9 @@ class ContentGenerator(AiClient):
             - Keep the tone informative, but slightly conversational to fit the Code&Coffee blog audience — friendly, smart, and chill
             - Prioritisation of any available statistics or figures (e.g. investment amounts, review dates)
 
-            Return only the single, best headline as plain text — no quotation marks, no explanation, and no extra formatting. [Strictly Follow the Rule above]
+            Return only the single, best headline as h1 component in HTML — no quotation marks, no explanation, and no extra formatting.
+            
+            [Strictly Follow the Rule above]
 
             Article:
             {content}
@@ -34,60 +36,102 @@ class ContentGenerator(AiClient):
 
             """
 
+        # Generate Title and return in HTML format
         try:
-            title = self.generate(PROMPT)
+            title = self.generate(PROMPT) or ""
 
-            if title is not None:
-                print(f"title: {title}")
-                self.article.set_title(title)
-                print(f"article:{self.article.get_title()}")
+            if title == "":
+                return None
+            
+            clean_title_html = self.clean_html_response(title)
+
+            self.article.set_title(clean_title_html)
+
+            return clean_title_html
 
         except Exception as e:
             print(f"❌ Error occured during generate Title: {e}")
         
         return title
 
-    def generate_content(self, content:str = "") -> str:
+    def generate_content(self, content:str = ""):
         """Generate content based on the provided pro mpt."""
+
+        aiContent = ""
+        
         PROMPT = f"""
-            You are a professional tech journalist and SEO expert.
+            You are a professional tech journalist and SEO expert writing for Code&Coffee — a smart, cozy, and informative technology blog.
 
-            Your task is to write clear, informative, and SEO-optimised body content for a modern technology news article, based on the source below.
+            Your task is to write clear, engaging, and SEO-optimised article body content in raw HTML format, ready to be embedded directly into a webpage. The article is based on the source material below.
 
-            Before writing, consider multiple narrative flows internally and select the most effective structure based on the following:
+            Before writing, internally consider multiple narrative flows. Select the most effective structure based on the following:
 
-            - Total word count should be approximately 700–900 words
-            - Begin with a short, engaging introduction that sets the context
-            - Clearly explain the news angle and timeline of events
-            - Use strong, relevant keywords naturally within the flow of the article
-            - Prioritise and highlight any key statistics, figures, or notable entities (e.g. investment amounts, review details, company names)
-            - Maintain clarity, newsworthiness, and audience relevance
-            - Use concise paragraphs with smooth transitions
-            - Apply a journalistic tone with action verbs and curiosity hooks where suitable
-            - Keep the writing smart, friendly, and slightly conversational to match Code&Coffee’s cozy yet professional brand voice
-            - Ensure the conclusion reinforces the main topic by naturally including related terms to strengthen SEO and semantic relevance
+            - Total word count: approximately 700–900 words
+            - Begin with a short, engaging introduction (<h2> followed by <p>) to set the context
+            - Clearly explain the news angle, timeline of events, and involved parties
+            - Naturally use strong, relevant keywords throughout (avoid keyword stuffing)
+            - Prioritise and highlight key statistics, figures, or notable entities (e.g. funding amounts, companies, regulators)
+            - Use short, clean paragraphs (<p> tags only) with smooth transitions
+            - Maintain a journalistic tone with action verbs and clarity
+            - Keep the writing smart, friendly, and slightly conversational to match Code&Coffee’s voice
+            - End with a conclusion that reinforces the topic using terms like “AI startup”, “regulatory compliance”, or “tech investment”
 
-
-            Important:
-            - Return only the full article body content
-            - Do not include a headline, quotation marks, meta descriptions, or any formatting
-            - Do not explain what you’re doing — return only the final article as plain text
+            ⚠️ Output Format — Strict Instructions:
+            - Return only valid, clean HTML body content
+            - Begin with a single <h2> tag for the article subheading (do NOT repeat the original title)
+            - Follow with one <p> tag per paragraph — do not skip or combine paragraphs
+            - Do NOT use markdown syntax, triple backticks, or language identifiers
+            - Do NOT include meta descriptions, comments, editor notes, or explanation
+            - Do NOT output anything outside the HTML content
 
             [BEGIN ARTICLE SOURCE]
             {content}
             [END ARTICLE SOURCE]
 
-            [Write Body Content Only — No Headline]
+            [Output: HTML Body Content Only — Begin with <h2>]
             """
 
 
+        # Generate content and return in HTML format
         try:
-            aiContent = self.generate(PROMPT)
+            aiContent = self.generate(PROMPT) or ""
+
+            # Clean up any markdown or newline artifacts from the output
+            cleaned_content_html = self.clean_html_response(aiContent)
+
+            self.article.set_content(cleaned_content_html)
 
         except Exception as e:
-            print(f"❌ Error occured during generate Title: {e}")
+            print(f"❌ Error occured during generate Content: {e}")
         
-        return aiContent
+        return cleaned_content_html
+    
+    def clean_html_response(self, raw:str = ""):
+        if raw == "":
+            return raw
+        
+        cleaned = raw.strip()
+
+        # Step 1: Remove triple backticks + optional 'html' tag
+        if cleaned.startswith("```html"):
+            cleaned = cleaned[7:].strip()
+        elif cleaned.startswith("```"):
+            cleaned = cleaned[3:].strip()
+
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3].strip()
+
+        # Step 2: Replace literal \n with actual line breaks (only if needed)
+        # Optional — for double-escaped LLM outputs
+        cleaned = cleaned.replace('\\n', '')  # Unescape \n
+        cleaned = cleaned.replace('\n\n', '')  # Clean up double newlines
+        cleaned = cleaned.replace('\n', '')
+
+        return cleaned.strip()
+        
+    def get_article(self):
+        return self.article
+        
       
 
 if __name__ == "__main__":
@@ -102,9 +146,11 @@ if __name__ == "__main__":
     Benchmark has attracted criticism for its Manus investment from Founders Fund partner Delian Asparouhov, who posted on X “wow, actions have consequences?”.
     """
 
-
+    
     client = ContentGenerator("phi4")
 
     content = client.generate_content(ARTICLE)
-    print(content)
+    print(client.get_article().to_dict())
+
+    # print(content)
     client.close()
