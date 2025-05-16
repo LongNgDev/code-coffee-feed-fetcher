@@ -2,9 +2,9 @@ from generator.aiClient import AiClient
 from articles.Article import Article
 
 class ContentGenerator(AiClient):
-    def __init__(self, model_name: str = "llma3"):
+    def __init__(self, model_name: str = "llma3", article: Article = None):
         super().__init__(model_name=model_name)
-        self.article = Article()
+        self.article = article or Article()
         
     def generate_title(self, content:str = ""):
         title = ""
@@ -60,29 +60,56 @@ class ContentGenerator(AiClient):
         aiContent = ""
         
         PROMPT = f"""
-            You are a professional tech journalist and SEO expert writing for Code&Coffee — a smart, cozy, and informative technology blog.
+            You are a professional tech journalist and SEO expert writing for Code&Coffee — a cozy, smart, and trustworthy technology blog designed for curious readers who value clarity, depth, and narrative storytelling.
 
-            Your task is to write clear, engaging, and SEO-optimised article body content in raw HTML format, ready to be embedded directly into a webpage. The article is based on the source material below.
+            Your task:
+            Write a high-quality, SEO-optimised article body in clean, valid raw HTML — ready for direct web embedding. The tone should be intelligent, friendly, slightly warm, and conversational — like a tech-savvy barista walking readers through a breaking story with insight and charm.
 
-            Before writing, internally consider multiple narrative flows. Select the most effective structure based on the following:
-
+            Content Strategy & Flow:
             - Total word count: approximately 700–900 words
-            - Begin with a short, engaging introduction (<h2> followed by <p>) to set the context
-            - Clearly explain the news angle, timeline of events, and involved parties
-            - Naturally use strong, relevant keywords throughout (avoid keyword stuffing)
-            - Prioritise and highlight key statistics, figures, or notable entities (e.g. funding amounts, companies, regulators)
-            - Use short, clean paragraphs (<p> tags only) with smooth transitions
-            - Maintain a journalistic tone with action verbs and clarity
-            - Keep the writing smart, friendly, and slightly conversational to match Code&Coffee’s voice
-            - End with a conclusion that reinforces the topic using terms like “AI startup”, “regulatory compliance”, or “tech investment”
+            - Internally evaluate multiple narrative flows; pick the most compelling one
+            - Start with:
+                • A single <h2> subheading (do NOT repeat the article title)
+                • A short <p> introduction that sets the context and draws the reader in
+            - Clearly explain:
+                • The core news angle and its broader significance
+                • The timeline of key events and regulatory backdrop (if applicable)
+                • Who is involved — individuals, companies, technologies, or transactions
+            - Use one <p> tag per paragraph — each paragraph should express a distinct idea
+            - Use <h3> tags to introduce 2–4 clear subsections within the article body when appropriate 
+            - Ensure smooth transitions between paragraphs (journalistic rhythm and logic)
+            - Maintain a smart, friendly, journalistic tone with action verbs and clarity
+            - End with a conclusion that reinforces the topic using SEO-relevant phrases like:
+                • <strong>AI startup</strong>
+                • <strong>regulatory compliance</strong>
+                • <strong>tech investment</strong>
 
-            ⚠️ Output Format — Strict Instructions:
-            - Return only valid, clean HTML body content
-            - Begin with a single <h2> tag for the article subheading (do NOT repeat the original title)
-            - Follow with one <p> tag per paragraph — do not skip or combine paragraphs
-            - Do NOT use markdown syntax, triple backticks, or language identifiers
-            - Do NOT include meta descriptions, comments, editor notes, or explanation
-            - Do NOT output anything outside the HTML content
+            SEO & Emphasis Formatting Rules:
+
+            - <strong> — Use to highlight:
+                • Proper nouns (e.g. <strong>OpenAI</strong>, <strong>ChatGPT</strong>)
+                • Key figures and dates (e.g. <strong>$75 million</strong>, <strong>2023</strong>)
+                • Industry terms (e.g. <strong>generative AI</strong>, <strong>machine learning</strong>)
+                • Legal/policy terms (e.g. <strong>CFIUS</strong>, <strong>AI Act</strong>)
+
+            - <em> — Use for nuance, tone, or contrast:
+                • Irony, uncertainty, tone (e.g. <em>“wow, actions have consequences?”</em>)
+                • Doubt or soft phrasing (e.g. <em>allegedly</em>, <em>on the other hand</em>)
+
+            - <strong><em>...</em></strong> — Use for phrases that are emotionally or politically critical:
+                • e.g. <strong><em>national security concern</em></strong>, <strong><em>massive investment risk</em></strong>
+
+            Formatting & Output Constraints:
+
+            - Return ONLY valid, clean HTML body content
+            - Use ONLY the following tags: <h2>, <p>, <strong>, <em>, <strong><em>
+            - Begin with a single <h2> tag
+            - Use one <p> tag per paragraph (do not combine or skip)
+            - Do NOT use markdown, triple backticks, syntax hints, or code formatting
+            - Do NOT bold or italicise entire paragraphs or technical filler
+            - Do NOT include meta tags, descriptions, editor notes, or extra explanation
+
+            Below is the article source content. Apply all rules above when formatting:
 
             [BEGIN ARTICLE SOURCE]
             {content}
@@ -90,6 +117,8 @@ class ContentGenerator(AiClient):
 
             [Output: HTML Body Content Only — Begin with <h2>]
             """
+
+
 
 
         # Generate content and return in HTML format
@@ -148,7 +177,7 @@ if __name__ == "__main__":
 
     
     client = ContentGenerator("phi4")
-
+    # title = client.generate_title(ARTICLE)
     content = client.generate_content(ARTICLE)
     print(client.get_article().to_dict())
 

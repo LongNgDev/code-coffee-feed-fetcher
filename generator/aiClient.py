@@ -23,7 +23,7 @@ class AiClient:
             print(f"❌ Failed to start {self.model_name} subprocess: {e}")
             return None
 
-    def generate(self, prompt):
+    """ def generate(self, prompt):
         try:
             # Use communicate for a single-shot prompt-response cycle
             stdout, stderr = self.process.communicate(input=prompt + "\n", timeout=300)
@@ -34,6 +34,28 @@ class AiClient:
             return clean_output
         except Exception as e:
             print(f"❌ Subprocess error: {e}")
+            return None """
+    
+    def generate(self, prompt):
+        try:
+            result = subprocess.run(
+                ["ollama", "run", self.model_name],
+                input=prompt + "\n",
+                text=True,
+                capture_output=True,
+                encoding="utf-8",
+                timeout=300
+            )
+
+            if result.stderr:
+                print(f"⚠️ stderr: {result.stderr.strip()}")
+
+            print(f"stdout: {result.stdout}")
+
+            return result.stdout.strip()
+
+        except Exception as e:
+            print(f"❌ Error during subprocess run: {e}")
             return None
 
     def close(self):
