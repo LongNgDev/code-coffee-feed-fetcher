@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 from fetcher.fetcher import Fetcher
-from articles.Article import Article
+from articles.NewsArticle import Article
 from extractor.factory import get_extractor_for_url
 import json
 

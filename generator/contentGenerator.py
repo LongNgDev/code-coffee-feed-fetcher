@@ -1,13 +1,13 @@
 from generator.aiClient import AiClient
-from articles.Article import Article
+from articles.News import Article
 
 class ContentGenerator(AiClient):
     def __init__(self, model_name: str = "llma3", article: Article = None):
         super().__init__(model_name=model_name)
         self.article = article or Article()
         
-    def generate_title(self, content:str = ""):
-        title = ""
+    def generate_title(self, content:str):
+        title = None
         
         PROMPT = f"""
             You are a professional tech journalist and SEO expert.
@@ -38,10 +38,7 @@ class ContentGenerator(AiClient):
 
         # Generate Title and return in HTML format
         try:
-            title = self.generate(PROMPT) or ""
-
-            if title == "":
-                return None
+            title = self.generate(PROMPT) or None
             
             clean_title_html = self.clean_html_response(title)
 
@@ -54,11 +51,11 @@ class ContentGenerator(AiClient):
         
         return title
 
-    def generate_content(self, content:str = ""):
-        """Generate content based on the provided pro mpt."""
+    def generate_content(self, content:str):
+        """Generate content based on the provided prompt."""
 
-        aiContent = ""
-        
+        aiContent = None
+
         PROMPT = f"""
             You are a professional tech journalist and SEO expert writing for Code&Coffee — a cozy, smart, and trustworthy technology blog designed for curious readers who value clarity, depth, and narrative storytelling.
 
@@ -123,7 +120,12 @@ class ContentGenerator(AiClient):
 
         # Generate content and return in HTML format
         try:
-            aiContent = self.generate(PROMPT) or ""
+            aiContent = self.generate(PROMPT) or None
+
+            # Check if the AI content is empty or None
+            if not aiContent:
+                print("❌ No content generated.")
+                return None
 
             # Clean up any markdown or newline artifacts from the output
             cleaned_content_html = self.clean_html_response(aiContent)
@@ -134,7 +136,7 @@ class ContentGenerator(AiClient):
             print(f"❌ Error occured during generate Content: {e}")
         
         return cleaned_content_html
-    
+        
     def clean_html_response(self, raw:str = ""):
         if raw == "":
             return raw
