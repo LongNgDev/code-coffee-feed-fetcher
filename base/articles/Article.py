@@ -1,9 +1,9 @@
 
 
 class Article:
-    def __init__(self, title, author, content):
+    def __init__(self, title, authors, content):
         self.title = title
-        self.author = author
+        self.authors = authors
         self.content = content
 
     def __str__(self):
@@ -20,8 +20,8 @@ class Article:
     def set_title(self, title: str):
         self.title = title
 
-    def set_author(self, author: str):
-        self.author = author
+    def set_authors(self, authors: str):
+        self.authors = authors
 
     def set_content(self, content: str):
         self.content = content
@@ -30,8 +30,8 @@ class Article:
     def get_title(self):
         return self.title
     
-    def get_author(self):
-        return self.author
+    def get_authors(self):
+        return self.authors
     
     def get_content(self):
         return self.content
@@ -40,6 +40,6 @@ class Article:
     def to_dict(self):
         return {
             "title": self.title,
-            "author": self.author,
+            "authors": self.authors,
             "content": self.content
         }

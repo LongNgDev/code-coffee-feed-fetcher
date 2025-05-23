@@ -1,11 +1,10 @@
 from urllib.parse import urlparse
 from fetcher.fetcher import Fetcher
-from articles.NewsArticle import Article
-from extractor.factory import get_extractor_for_url
-import json
+from base.articles.newsArticle import NewsArticle
+from fetcher.extractor.factory import get_extractor_for_url
 
-from generator.aiClient import AiClient
-from storage.news_db import NewsDB
+from generator.tagsExtractor import TagsExtractor
+from base.storage.news_db import NewsDB
 
 class NewsFetcher(Fetcher):
     def __init__(self, sources: list[dict]):
@@ -70,28 +69,11 @@ class NewsFetcher(Fetcher):
             extractor = get_extractor_for_url(link)
             content = extractor.extract_content()
 
-            client = AiClient(model_name="llama3")
-            prompt = f"""
-            Extract only the most relevant, concise keywords or tags that best describe the content of the following tech-focused article. Focus on technology-related terms, industry keywords, and company names. Return the tags as a single, comma-separated list with no explanations, no formatting, and no introductory text. 
-
-            Article:
-            {content}
-
-            Output:
-            [list of tags]
-            """
-
-            
-            # Generate tags and ensure they are a list
-            raw_tags = client.generate(prompt)
-
-            # Split and clean tags
-            tags = [tag.strip() for tag in raw_tags.split(",") if tag.strip()]
-            print(f"Tags for {title}: {tags}")
-            client.close()
+            with TagsExtractor() as tags_extractor:
+                tags = tags_extractor.extract_tags(content)
 
             # Create the article object
-            article = Article(title, link, authors, published, summary, guid, tags, content)
+            article = NewsArticle(title, link, authors, published, summary, guid, tags, content)
 
             articles.append(article)    
 

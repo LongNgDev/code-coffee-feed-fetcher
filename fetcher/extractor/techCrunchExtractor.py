@@ -1,6 +1,6 @@
 # extractor/techcrunch_extractor.py
 
-from extractor.contentExtractor import ContentExtractor
+from fetcher.extractor.contentExtractor import ContentExtractor
 
 
 class TechCrunchExtractor(ContentExtractor):

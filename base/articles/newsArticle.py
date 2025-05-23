@@ -1,7 +1,7 @@
 
 
 
-from articles.Article import Article
+from base.articles.Article import Article
 
 
 class NewsArticle(Article):

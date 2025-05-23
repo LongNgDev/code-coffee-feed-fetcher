@@ -1,4 +1,4 @@
-from storage.mongodb_client import MongoDBClient
+from base.storage.mongodb_client import MongoDBClient
 from datetime import datetime, timezone
 
 

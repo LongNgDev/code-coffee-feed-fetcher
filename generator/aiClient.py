@@ -23,18 +23,6 @@ class AiClient:
             print(f"❌ Failed to start {self.model_name} subprocess: {e}")
             return None
 
-    """ def generate(self, prompt):
-        try:
-            # Use communicate for a single-shot prompt-response cycle
-            stdout, stderr = self.process.communicate(input=prompt + "\n", timeout=300)
-            # Clean up the ANSI escape sequences (if any)
-            clean_output = re.sub(r'\x1b\[[0-9;]*[a-zA-Z]', '', stdout).strip()
-            if stderr:
-                print(f"⚠️ Subprocess stderr: {stderr.strip()}")
-            return clean_output
-        except Exception as e:
-            print(f"❌ Subprocess error: {e}")
-            return None """
     
     def generate(self, prompt):
         try:
@@ -67,6 +55,14 @@ class AiClient:
             print(f"🛑 Persistent {self.model_name} process terminated.")
         except Exception as e:
             print(f"❌ Error closing subprocess: {e}")
+
+
+    # 🎀 Context manager support
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
 if __name__ == "__main__":
 

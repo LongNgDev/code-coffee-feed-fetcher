@@ -1,5 +1,5 @@
 from generator.aiClient import AiClient
-from articles.News import Article
+from base.articles.newsArticle import Article
 
 class ContentGenerator(AiClient):
     def __init__(self, model_name: str = "llma3", article: Article = None):
@@ -128,7 +128,7 @@ class ContentGenerator(AiClient):
                 return None
 
             # Clean up any markdown or newline artifacts from the output
-            cleaned_content_html = self.clean_html_response(aiContent)
+            cleaned_content_html = self.__clean_html_response(aiContent)
 
             self.article.set_content(cleaned_content_html)
 
@@ -137,7 +137,7 @@ class ContentGenerator(AiClient):
         
         return cleaned_content_html
         
-    def clean_html_response(self, raw:str = ""):
+    def __clean_html_response(self, raw:str = ""):
         if raw == "":
             return raw
         

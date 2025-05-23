@@ -2,7 +2,7 @@ from abc import ABC
 from pymongo import MongoClient
 from datetime import datetime, timezone
 
-from storage.db_interface import DatabaseInterface
+from base.storage.db_interface import DatabaseInterface
 
 
 class MongoDBClient(DatabaseInterface, ABC):

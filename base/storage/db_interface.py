@@ -38,11 +38,6 @@ class DatabaseInterface(ABC):
         pass
     
     @abstractmethod
-    def is_duplicate(self, query: dict) -> bool:
-        """Check if data already exists in the database."""
-        pass
-    
-    @abstractmethod
     def get_collection(self, collection_name: str):
         """Get a specific collection from the database."""
         pass

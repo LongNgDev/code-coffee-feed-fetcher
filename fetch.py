@@ -1,7 +1,5 @@
 from fetcher.news_fetcher import NewsFetcher
 from config.sources import sources
-from storage.news_db import NewsDB
-from urllib.parse import urlparse
 
 def main():
     try:

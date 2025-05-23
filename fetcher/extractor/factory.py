@@ -1,8 +1,7 @@
 # extractor/factory.py
 
 from urllib.parse import urlparse
-from extractor.techCrunchExtractor import TechCrunchExtractor
-from extractor.techRadarExtractor import TechRadarExtractor
+from fetcher.extractor.techCrunchExtractor import TechCrunchExtractor
 
 def get_extractor_for_url(link, article: dict = None):
     domain = urlparse(link).netloc
