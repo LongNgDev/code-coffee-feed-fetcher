@@ -3,6 +3,8 @@ from fetcher.fetcher import Fetcher
 from base.articles.newsArticle import NewsArticle
 from fetcher.extractor.factory import get_extractor_for_url
 
+from generator.slugGenerator import SlugGenerator
+
 from generator.tagsExtractor import TagsExtractor
 from base.storage.news_db import NewsDB
 
@@ -65,15 +67,19 @@ class NewsFetcher(Fetcher):
             summary = getattr(entry, "summary", getattr(entry, "description", ""))
             guid = getattr(entry, "id", None) 
             authors = getattr(entry, "author", None)
-            
             extractor = get_extractor_for_url(link)
             content = extractor.extract_content()
 
             with TagsExtractor() as tags_extractor:
                 tags = tags_extractor.extract_tags(content)
 
+            slugGenerator = SlugGenerator(title)
+            slugGenerator.generate_slug()
+            slug = slugGenerator.get_slug()
+            
+
             # Create the article object
-            article = NewsArticle(title, link, authors, published, summary, guid, tags, content)
+            article = NewsArticle(title, link, authors, published, summary, guid, tags, content, slug)
 
             articles.append(article)    
 

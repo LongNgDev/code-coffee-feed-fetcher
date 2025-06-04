@@ -5,13 +5,14 @@ from base.articles.Article import Article
 
 
 class NewsArticle(Article):
-    def __init__(self, title: str = "", link: str = "", authors: str = "", published: str = "", summary: str = "", guid: str = "", tags: list[str] = [""], content: str = ""):
+    def __init__(self, title: str = "", link: str = "", authors: str = "", published: str = "", summary: str = "", guid: str = "", tags: list[str] = [""], content: str = "", slug: str = ""):
         super().__init__(title, authors, content)
         self.link = link
         self.published = published
         self.summary = summary
         self.tags = tags
         self.guid = guid
+        self.slug = slug
 
     """ Setters """ 
     
@@ -30,6 +31,9 @@ class NewsArticle(Article):
     def set_tags(self, tags: list[str]):
         self.tags = tags
 
+    def set_slug(self, slug: str):
+        self.slug = slug
+
     """ Getters """
     def get_link(self):
         return self.link
@@ -46,12 +50,16 @@ class NewsArticle(Article):
     def get_tags(self):
         return self.tags
     
+    def get_slug(self):
+        return self.slug
+    
     """ Other methods """
 
     def to_dict(self):
         return {
             "title": self.title,
             "link": self.link,
+            "slug": self.slug,
             "content": self.content,
             "tags": self.tags,
             "authors": self.authors,

@@ -38,8 +38,6 @@ class AiClient:
             if result.stderr:
                 print(f"⚠️ stderr: {result.stderr.strip()}")
 
-            print(f"stdout: {result.stdout}")
-
             return result.stdout.strip()
 
         except Exception as e:
