@@ -120,6 +120,7 @@ class ContentGenerator(AiClient):
 
         # Generate content and return in HTML format
         try:
+            print("📝 Generating content...")
             aiContent = self.generate(PROMPT) or None
 
             # Check if the AI content is empty or None
@@ -130,7 +131,7 @@ class ContentGenerator(AiClient):
             # Clean up any markdown or newline artifacts from the output
             cleaned_content_html = self.__clean_html_response(aiContent)
 
-            self.article.set_content(cleaned_content_html)
+            # self.article.set_content(cleaned_content_html)
 
         except Exception as e:
             print(f"❌ Error occured during generate Content: {e}")

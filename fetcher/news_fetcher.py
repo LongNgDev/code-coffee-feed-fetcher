@@ -4,8 +4,10 @@ from base.articles.newsArticle import NewsArticle
 from fetcher.extractor.factory import get_extractor_for_url
 
 from generator.slugGenerator import SlugGenerator
+from generator.contentGenerator import ContentGenerator
 
 from base.extractor.tagsExtractor import TagsExtractor
+from base.extractor.thumbnailExtractor import ThumbnailExtractor
 from base.storage.news_db import NewsDB
 
 class NewsFetcher(Fetcher):
@@ -43,6 +45,7 @@ class NewsFetcher(Fetcher):
     def get_articles(self):
         """Return the list of fetched articles."""
         articles = []
+        contentGenerator = ContentGenerator(model_name="phi4")
 
         for entry in self.articles:
 
@@ -67,19 +70,26 @@ class NewsFetcher(Fetcher):
             summary = getattr(entry, "summary", getattr(entry, "description", ""))
             guid = getattr(entry, "id", None) 
             authors = getattr(entry, "author", None)
+
             extractor = get_extractor_for_url(link)
-            content = extractor.extract_content()
+
+            raw_content = extractor.extract_content()
+            ai_content = contentGenerator.generate_content(raw_content) 
 
             with TagsExtractor() as tags_extractor:
-                tags = tags_extractor.extract_tags(content)
+                tags = tags_extractor.extract_tags(raw_content)
 
             slugGenerator = SlugGenerator(title)
             slugGenerator.generate_slug()
             slug = slugGenerator.get_slug()
+
+            # Extract thumbnail
+            # thumbnailExtractor = ThumbnailExtractor()
+            thumbnail = slug
             
 
             # Create the article object
-            article = NewsArticle(title, link, authors, published, summary, guid, tags, content, slug)
+            article = NewsArticle(title=title, link=link, authors=authors, published=published, summary=summary, guid=guid, tags=tags, raw_content=raw_content, ai_content=ai_content, slug=slug, thumbnail=thumbnail)
 
             articles.append(article)    
 

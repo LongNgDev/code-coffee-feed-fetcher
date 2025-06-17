@@ -1,7 +1,7 @@
 
 
 class Article:
-    def __init__(self, title, authors, content):
+    def __init__(self, title: str = "", authors: str = "", content: str = ""):
         self.title = title
         self.authors = authors
         self.content = content
