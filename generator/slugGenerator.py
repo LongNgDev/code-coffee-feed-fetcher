@@ -16,5 +16,5 @@ class SlugGenerator:
     finally:  
       return None
     
-  def get_slug(self):
+  def get_slug(self) -> str:
     return self.slug

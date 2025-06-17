@@ -6,7 +6,7 @@ from base.storage.db_interface import DatabaseInterface
 
 
 class MongoDBClient(DatabaseInterface, ABC):
-    def __init__(self, collection_name:str, uri: str = "mongodb://localhost:27017/", db_name: str = "code_and_coffee_db"):
+    def __init__(self, collection_name:str, uri: str = "mongodb://127.0.0.1:27017/", db_name: str = "code_and_coffee_db"):
         self.uri = uri
         self.db_name = db_name
         self.db_collection_name = collection_name
@@ -35,10 +35,10 @@ class MongoDBClient(DatabaseInterface, ABC):
             print("⚠️ No data to save.")
             return
         
-        collection = self.get_collection(self.db_collection_name)
+        collection = self.get_collection()
 
         # Check for duplicates before saving
-        if self.is_duplicate(data, self.db_collection_name):
+        if self.is_duplicate(data):
             print(f"⚠️ Duplicate not saved: {data.get('title', 'Untitled')}")
             return
         

@@ -5,7 +5,7 @@ from fetcher.extractor.factory import get_extractor_for_url
 
 from generator.slugGenerator import SlugGenerator
 
-from generator.tagsExtractor import TagsExtractor
+from base.extractor.tagsExtractor import TagsExtractor
 from base.storage.news_db import NewsDB
 
 class NewsFetcher(Fetcher):
