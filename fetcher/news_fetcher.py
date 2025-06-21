@@ -45,7 +45,7 @@ class NewsFetcher(Fetcher):
     def get_articles(self):
         """Return the list of fetched articles."""
         articles = []
-        contentGenerator = ContentGenerator(model_name="phi4")
+        contentGenerator = ContentGenerator(model_name="mistral")
 
         for entry in self.articles:
 
