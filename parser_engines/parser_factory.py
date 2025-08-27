@@ -15,4 +15,8 @@ class ParserManager():
     def get_parser(self, url: str) -> ArticleParser:
         # Extract the domain using urlparse with netloc
         domain = urlparse(url).netloc.replace("www", "")
+        parser = PARSER_MAP.get(domain)
+
+        if not parser:
+            return
         return PARSER_MAP.get(domain)
